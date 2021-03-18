@@ -6,13 +6,10 @@ class User():
         self.user = "admin"
         self.dfUser = pd.DataFrame.from_dict(
             {"username": ["admin", "User1"], "password": ["12345678", "qwertyui"]})
-        # self.dfUser.to_csv("userinfo.csv")
         self.dfRoles = pd.DataFrame.from_dict(
             {"username": ["admin", "User1"], "roles": ["adminstrator", "team"]})
-        # dfRoles.to_csv("rolesinfo.csv")
         self.dfAccess = pd.DataFrame.from_dict({"roles": ["adminstrator", "team", "customer"], "actions": [
                                                ["Read", "Write", "Delete"], ["Read", "Write"], ["Read"]]})
-        # dfAccess.to_csv("accessinfo.csv")
         self.dfResources = pd.DataFrame.from_dict(
             {"resource": ["servers", "database", "network"]})
 
@@ -52,7 +49,6 @@ class User():
     def login(self):
         username = input("Please enter your username: ")
         password = input("Please enter your password: ")
-        # df = pd.read_csv("userinfo.csv")
         if username in self.dfUser["username"].values and password in self.dfUser["password"].values:
             self.user = username
             self.userChoice()
@@ -105,7 +101,7 @@ class User():
                         self.dfResources.index[self.dfResources["resource"] == resourceValue], inplace=True)
                     print(
                         "Resource has been deleted currently available resources are: ")
-                    print(self.dfResources.values[0])
+                    print(self.dfResources)
                     self.userChoice()
             elif actionValue == "":
                 self.userChoice()
