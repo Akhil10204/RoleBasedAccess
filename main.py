@@ -7,16 +7,19 @@ class User():
         self.dfUser = pd.DataFrame.from_dict(
             {"username": ["admin", "User1"], "password": ["12345678", "qwertyui"]})
         self.dfRoles = pd.DataFrame.from_dict(
-            {"username": ["admin", "User1"], "roles": ["adminstrator", "team"]})
-        self.dfAccess = pd.DataFrame.from_dict({"roles": ["adminstrator", "team", "customer"], "actions": [
+            {"username": ["admin", "User1"], "roles": ["administrator", "team"]})
+        self.dfAccess = pd.DataFrame.from_dict({"roles": ["administrator", "team", "customer"], "actions": [
                                                ["Read", "Write", "Delete"], ["Read", "Write"], ["Read"]]})
         self.dfResources = pd.DataFrame.from_dict(
             {"resource": ["servers", "database", "network"]})
 
+    # This will be function from where the execution will begin,
+    # Initially the user will be logged in as admin and will have a choice
+    # to select different user
     def userChoice(self):
         print("hi! you are logged in as "+self.user)
         print("press 1 to login as another user")
-        if self.user == "admin":
+        if "administrator" in self.dfRoles[self.dfRoles["username"] == self.user]["roles"].values:
             print("press 2 for create user")
             print("press 3 for edit roles")
             print("press 4 for edit resources")
@@ -46,6 +49,7 @@ class User():
             elif int(choice) == 3:
                 self.resource()
 
+    # The function will help in logging in as differnet user from current one
     def login(self):
         username = input("Please enter your username: ")
         password = input("Please enter your password: ")
@@ -56,12 +60,15 @@ class User():
             print("!!! Username or password is incorrect !!!")
             self.userChoice()
 
+    # Will return the role of the current user
     def roles(self):
         role = self.dfRoles[self.dfRoles["username"]
                             == self.user]["roles"].values[0]
         print("your role is ", role)
         self.userChoice()
 
+    # Will enable user to see the resources available and
+    #  let user to write or delete depending upon user access
     def resource(self):
         role = self.dfRoles[self.dfRoles["username"]
                             == self.user]["roles"].values[0]
@@ -112,6 +119,7 @@ class User():
         else:
             self.userChoice()
 
+    # create new user, the function can only be called by users with administrator role
     def createUser(self):
         username = input(
             "Please enter new username or press enter to go back: ")
@@ -123,8 +131,6 @@ class User():
         print("Please enter user role from the following roles: ",
               self.dfAccess["roles"].values)
         role = input()
-        # print(role, "/n")
-        # print(self.dfAccess["roles"])
         if role in self.dfAccess["roles"].values:
             while username in self.dfUser["username"].values:
                 print("!!! user already exist !!!")
@@ -151,6 +157,7 @@ class User():
 
         pass
 
+    # let people with admin access to edit roles of other users
     def editRoles(self):
         print("Please enter username from the given list of username or press enter to continue: ",
               self.dfRoles["username"].values)
